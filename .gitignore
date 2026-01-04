@@ -1,0 +1,10 @@
+# Security: NEVER upload keys
+.env
+
+# Python clutter
+venv/
+__pycache__/
+*.pyc
+
+# Operating System files
+.DS_Store

@@ -1,0 +1,25 @@
+research_task:
+  description: >
+    Conduct a comprehensive research on the topic: "{topic}".
+    Identify key trends, statistics, and expert opinions.
+    Focus on finding information that matches a {tone} tone.
+  expected_output: >
+    A bulleted list of 5-7 key findings with sources.
+
+writing_task:
+  description: >
+    Using the research provided, write a full blog post on "{topic}".
+    The post must include an engaging title, an introduction, main body sections, and a conclusion.
+    The tone should be {tone}.
+    Make sure to use markdown formatting (bolding, lists, headers).
+  expected_output: >
+    A complete blog post in Markdown format, ready to publish.
+
+editing_task:
+  description: >
+    Review the blog post drafted by the Writer.
+    Check for grammatical errors and ensure the tone is {tone}.
+    Ensure the layout is clean markdown (headers, bullet points).
+    Do not change the core facts, but smooth out the sentences.
+  expected_output: >
+    The final, polished blog post in Markdown format.
