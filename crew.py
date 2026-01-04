@@ -11,14 +11,12 @@ class BlogCrew():
     agents_config = 'agents.yaml'
     tasks_config = 'tasks.yaml'
 
-    # WE REMOVED THE LLM CLASS DEFINITION HERE TO PREVENT ERRORS
 
     @agent
     def researcher(self) -> Agent:
         return Agent(
             config=self.agents_config['researcher'],
             verbose=True,
-            # PASS THE STRING DIRECTLY
             llm="groq/llama-3.3-70b-versatile"
         )
 
