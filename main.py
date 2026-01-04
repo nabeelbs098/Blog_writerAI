@@ -7,57 +7,64 @@ import io
 st.set_page_config(
     page_title="ContentCrew AI",
     page_icon=" ",
-    layout="wide",
-    initial_sidebar_state="expanded"
+    layout="wide"
 )
 
-# 2. Custom CSS (Cleaner look)
+# 2. Custom CSS (Make the button big and green)
 st.markdown("""
 <style>
-    .stAppHeader {background-color: transparent;}
     .stButton>button {
         width: 100%;
         border-radius: 8px;
         height: 50px;
         font-weight: bold;
+        background-color: #00AA00; /* Green accent */
+        color: white;
+    }
+    .stTextArea textarea {
+        font-size: 16px;
     }
 </style>
 """, unsafe_allow_html=True)
 
-# 3. Sidebar
-with st.sidebar:
-    st.image("https://cdn-icons-png.flaticon.com/512/2065/2065064.png", width=80)
-    st.title("ContentCrew")
-    
-    st.markdown("### 1. Topic Definition")
-    topic = st.text_area(
-        "What should we write about?",
-        placeholder="E.g., The Future of Quantum Computing in 2026",
-        height=100
-    )
-    
-    st.markdown("### 2. Style & Tone")
-    col1, col2 = st.columns(2)
-    with col1:
-        tone = st.selectbox("Tone", ["Professional", "Witty", "Academic", "Persuasive"])
-    with col2:
-        audience = st.selectbox("Audience", ["Tech Savvy", "General Public", "Investors"])
-        
-    st.divider()
-    run_btn = st.button("🚀 Launch Crew", type="primary")
+# 3. Main Header
+st.title("AI Blog Writing Studio")
+st.markdown("Generate high-quality, researched blog posts with a multi-agent AI team.")
+st.divider()
 
-# 4. Main Content Area
-st.title(" AI Blog Writing Studio")
+# 4. Inputs Section (Moved from Sidebar to Main Page)
+st.subheader("1. Define Your Content")
 
-# 5. Output Handler (Modified to be invisible)
+# Topic Input (Full width)
+topic = st.text_area(
+    "What should we write about?",
+    placeholder="E.g., The Future of Quantum Computing in 2026",
+    height=80,
+    label_visibility="collapsed" # Hides the label to look cleaner
+)
+
+# Tone and Audience (Side by Side)
+col1, col2, col3 = st.columns([1, 1, 1])
+
+with col1:
+    tone = st.selectbox("Tone", ["Professional", "Witty", "Academic", "Persuasive"])
+with col2:
+    audience = st.selectbox("Audience", ["Tech Savvy", "General Public", "Investors"])
+with col3:
+    # Spacer to align button with inputs (optional, or just put button below)
+    st.write("") 
+    st.write("")
+    run_btn = st.button("Start...", type="primary")
+
+st.divider()
+
+# 5. Output Handler (Invisible logic)
 class StreamlitOutputStream(io.StringIO):
     def __init__(self, status_container):
         super().__init__()
         self.status_container = status_container
 
     def write(self, s):
-        # We only look for keywords to update the status spinner
-        # We DO NOT print the raw text to the screen anymore
         if "Researcher" in s:
             self.status_container.update(label="Researcher is finding facts...", state="running")
         elif "Writer" in s:
@@ -67,24 +74,16 @@ class StreamlitOutputStream(io.StringIO):
 
 # 6. Execution Logic
 if run_btn and topic:
-    # Use a status container for the "thinking" animation
+    
+    # Status Box
     with st.status("🚀 Initializing Agents...", expanded=True) as status:
         
-        # Redirect stdout to our cleaner handler
         sys.stdout = StreamlitOutputStream(status)
         
         try:
-            inputs = {
-                'topic': topic, 
-                'tone': tone,
-                'audience': audience
-            }
-            
-            # Run the Crew
+            inputs = {'topic': topic, 'tone': tone, 'audience': audience}
             result = BlogCrew().crew().kickoff(inputs=inputs)
-            
-            # Success State
-            status.update(label="✅ Blog Post Generated Successfully!", state="complete", expanded=False)
+            status.update(label="✅ Blog Post Generated!", state="complete", expanded=False)
             
         except Exception as e:
             status.update(label="❌ An Error Occurred", state="error")
@@ -93,7 +92,6 @@ if run_btn and topic:
 
     # Display Result
     st.markdown("### Your Generated Blog Post")
-    st.markdown("---")
     st.markdown(result)
     
     # Download Button
