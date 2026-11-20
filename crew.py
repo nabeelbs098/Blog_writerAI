@@ -17,7 +17,7 @@ class BlogCrew():
         return Agent(
             config=self.agents_config['researcher'],
             verbose=True,
-            llm="groq/llama-3.3-70b-versatile"
+            llm="groq/openai/gpt-oss-120b"
         )
 
     @agent
@@ -25,7 +25,7 @@ class BlogCrew():
         return Agent(
             config=self.agents_config['writer'],
             verbose=True,
-            llm="groq/llama-3.3-70b-versatile"
+            llm="groq/openai/gpt-oss-120b"
         )
 
     @agent
@@ -33,7 +33,7 @@ class BlogCrew():
         return Agent(
             config=self.agents_config['editor'],
             verbose=True,
-            llm="groq/llama-3.3-70b-versatile"
+            llm="groq/openai/gpt-oss-120b"
         )
 
     @task
